@@ -35,3 +35,14 @@ class WatchListRepository:
             message = f'UserRepository::insert_one_symbol_in_watch_list::with this query::"user":{watch_list_symbol_dict}'
             Gladsheim.error(error=ex, message=message)
             raise ex
+
+    @classmethod
+    async def exists(cls, watch_list_symbol: WatchListSymbolModel):
+        collection = await cls.__get_collection()
+        try:
+            id = watch_list_symbol.id
+            return bool(await collection.find_one({"_id": id}))
+        except Exception as ex:
+            message = f'UserRepository::exists::with this query::"user":{watch_list_symbol.to_dict()}'
+            Gladsheim.error(error=ex, message=message)
+            raise ex

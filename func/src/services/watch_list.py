@@ -14,7 +14,9 @@ class WatchListService:
         futures = list()
         for watch_list_symbol in watch_list_symbols.symbols:
             watch_list_symbol_model = WatchListSymbolModel(watch_list_symbol, unique_id)
-            futures.append(cls.watch_list_repository.insert_one_symbol_in_watch_list(watch_list_symbol_model))
+            symbol_already_exists_on_watch_list = await cls.watch_list_repository.exists(watch_list_symbol_model)
+            if not symbol_already_exists_on_watch_list:
+                futures.append(cls.watch_list_repository.insert_one_symbol_in_watch_list(watch_list_symbol_model))
         await asyncio.gather(*futures)
 
         return True

@@ -42,6 +42,3 @@ async def save_symbols():
             success=False, code=InternalCode.INTERNAL_SERVER_ERROR, message=message
         ).build_http_response(status=HTTPStatus.INTERNAL_SERVER_ERROR)
         return response
-
-if __name__ == "__main__":
-    app.run()
