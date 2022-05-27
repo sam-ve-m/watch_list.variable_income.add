@@ -1,5 +1,5 @@
 # Jormungandr-Onboarding
-from func.src.domain.exceptions import EmailAlreadyExists
+from src.domain.exceptions import EmailAlreadyExists
 from .stub import stub_user_model
 
 # Standards
@@ -10,14 +10,14 @@ import pytest
 
 
 @pytest.mark.asyncio
-@patch('func.src.services.user_register.UserRepository.find_one_by_email')
+@patch('src.services.user_register.UserRepository.find_one_by_email')
 async def test_when_email_already_exists_then_raises(mock_find_one, user_service):
     with pytest.raises(EmailAlreadyExists):
         await user_service.verify_email_already_exists()
 
 
 @pytest.mark.asyncio
-@patch('func.src.services.user_register.UserRepository.find_one_by_email', return_value=None)
+@patch('src.services.user_register.UserRepository.find_one_by_email', return_value=None)
 async def test_when_email_not_in_use_then_return_none_and_continue_execution(mock_find_one, user_service):
     email_in_use = await user_service.verify_email_already_exists()
 
@@ -25,7 +25,7 @@ async def test_when_email_not_in_use_then_return_none_and_continue_execution(moc
 
 
 @pytest.mark.asyncio
-@patch('func.src.services.user_register.UserRepository.find_one_by_email', return_value=None)
+@patch('src.services.user_register.UserRepository.find_one_by_email', return_value=None)
 async def test_when_run_function_then_find_one_was_called(mock_find_one, user_service):
     await user_service.verify_email_already_exists()
 
@@ -33,9 +33,9 @@ async def test_when_run_function_then_find_one_was_called(mock_find_one, user_se
 
 
 @pytest.mark.asyncio
-@patch('func.src.services.user_register.UserRepository.insert_one_user')
-@patch('func.src.services.user_register.Social.register_user')
-@patch('func.src.services.user_register.Audit.register_user_log')
+@patch('src.services.user_register.UserRepository.insert_one_user')
+@patch('src.services.user_register.Social.register_user')
+@patch('src.services.user_register.Audit.register_user_log')
 async def test_when_user_not_exist_then_successfully_register(mock_audit, mock_social, mock_insert_one, user_service):
     success = await user_service.register()
 
@@ -43,10 +43,10 @@ async def test_when_user_not_exist_then_successfully_register(mock_audit, mock_s
 
 
 @pytest.mark.asyncio
-@patch('func.src.services.user_register.UserModel.to_dict', return_value=stub_user_model)
-@patch('func.src.services.user_register.UserRepository.insert_one_user')
-@patch('func.src.services.user_register.Social.register_user')
-@patch('func.src.services.user_register.Audit.register_user_log')
+@patch('src.services.user_register.UserModel.to_dict', return_value=stub_user_model)
+@patch('src.services.user_register.UserRepository.insert_one_user')
+@patch('src.services.user_register.Social.register_user')
+@patch('src.services.user_register.Audit.register_user_log')
 async def test_when_user_not_exist_then_mocks_was_called(mock_audit, mock_social, mock_insert_one, mock_user, user_service):
     await user_service.register()
 

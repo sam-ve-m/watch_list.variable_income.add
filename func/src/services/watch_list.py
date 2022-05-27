@@ -1,7 +1,7 @@
 # Jormungandr
-from func.src.repositories.watch_list.repository import WatchListRepository
-from func.src.domain.validator import WatchListSymbols
-from func.src.domain.watch_list.model import WatchListSymbolModel
+from src.repositories.watch_list.repository import WatchListRepository
+from src.domain.validator import WatchListSymbols
+from src.domain.watch_list.model import WatchListSymbolModel
 import asyncio
 
 

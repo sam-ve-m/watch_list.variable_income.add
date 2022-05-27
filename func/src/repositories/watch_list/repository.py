@@ -1,6 +1,6 @@
 # Jormungandr
-from func.src.domain.watch_list.model import WatchListSymbolModel
-from func.src.infrastructures.mongo_db.infrastructure import MongoDBInfrastructure
+from src.domain.watch_list.model import WatchListSymbolModel
+from src.infrastructures.mongo_db.infrastructure import MongoDBInfrastructure
 from decouple import config
 from nidavellir import Sindri
 

@@ -1,5 +1,5 @@
-from func.src.domain.validator import UserParams
-from func.src.domain.user.model import UserModel
+from src.domain.validator import UserParams
+from src.domain.user.model import UserModel
 
 stub_user_params = UserParams(**{
     'email': 'teste@teste.com',

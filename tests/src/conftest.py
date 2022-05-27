@@ -1,5 +1,5 @@
 # Jormungandr-Onboarding
-from func.src.services.watch_list import UserService
+from src.services.watch_list import UserService
 from .stub import stub_user_params
 
 # Third party

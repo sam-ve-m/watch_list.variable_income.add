@@ -1,0 +1,55 @@
+include:
+- ./func/*
+kind: ArchiveUploadSpec
+name: func-LYkK
+
+---
+apiVersion: fission.io/v1
+kind: Package
+metadata:
+  creationTimestamp: null
+  name: wathc-list-save-fn-c46c1bd0-4aa7-49c6-bb75-da537b63b072
+  namespace: default
+spec:
+  deployment:
+    checksum: {}
+  environment:
+    name: wathc-list-save-env
+    namespace: default
+  source:
+    checksum: {}
+    type: url
+    url: archive://func-LYkK
+status:
+  buildstatus: pending
+  lastUpdateTimestamp: "2022-05-26T17:23:11Z"
+
+---
+apiVersion: fission.io/v1
+kind: Function
+metadata:
+  creationTimestamp: null
+  name: wathc-list-save-fn
+  namespace: default
+spec:
+  InvokeStrategy:
+    ExecutionStrategy:
+      ExecutorType: newdeploy
+      MaxScale: 1
+      MinScale: 1
+      SpecializationTimeout: 120
+      TargetCPUPercent: 80
+    StrategyType: execution
+  concurrency: 500
+  environment:
+    name: wathc-list-save-env
+    namespace: default
+  functionTimeout: 60
+  idletimeout: 120
+  package:
+    functionName: main.save_symbols
+    packageref:
+      name: wathc-list-save-fn-c46c1bd0-4aa7-49c6-bb75-da537b63b072
+      namespace: default
+  requestsPerPod: 100000
+  resources: {}

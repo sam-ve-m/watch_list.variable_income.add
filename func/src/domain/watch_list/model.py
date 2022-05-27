@@ -1,4 +1,4 @@
-from func.src.domain.validator import WatchListSymbol
+from src.domain.validator import WatchListSymbol
 
 
 class WatchListSymbolModel:

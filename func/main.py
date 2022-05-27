@@ -1,3 +1,9 @@
+# from os.path import dirname, abspath
+# import sys
+# path_adjustment = dirname(dirname(abspath(__file__)))
+# print(path_adjustment)
+# sys.path.insert(0, str(path_adjustment))
+
 # Jormungandr
 from src.domain.enums.response.code import InternalCode
 from src.domain.validator import WatchListSymbols
@@ -13,7 +19,7 @@ from flask import request
 from etria_logger import Gladsheim
 
 
-async def save_symbols():
+async def save_symbols(request=request):
     raw_params = request.json
     x_thebes_answer = request.headers.get('x-thebes-answer')
 

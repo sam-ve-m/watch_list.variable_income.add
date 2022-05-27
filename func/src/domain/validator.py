@@ -1,5 +1,5 @@
 # Jormungandr
-from func.src.domain.enums.region.enum import Region
+from src.domain.enums.region.enum import Region
 
 # Third party
 from pydantic import BaseModel, constr
