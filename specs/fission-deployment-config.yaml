@@ -4,4 +4,4 @@
 apiVersion: fission.io/v1
 kind: DeploymentConfig
 name: watch-list-add
-uid: 834c63e2-d714-438c-b1df-7061b65c74ef
+uid: 49347d86-d9d7-4600-b9e9-dc316e91c78a

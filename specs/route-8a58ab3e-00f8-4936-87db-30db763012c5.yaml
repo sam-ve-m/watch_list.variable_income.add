@@ -2,7 +2,7 @@ apiVersion: fission.io/v1
 kind: HTTPTrigger
 metadata:
   creationTimestamp: null
-  name: ee6783a2-5427-4504-a66d-5bc402f8ed9b
+  name: 8a58ab3e-00f8-4936-87db-30db763012c5
   namespace: default
 spec:
   createingress: false
@@ -18,6 +18,6 @@ spec:
     tls: ""
   method: ""
   methods:
-  - GET
+  - POST
   prefix: ""
   relativeurl: /watch_list/add
