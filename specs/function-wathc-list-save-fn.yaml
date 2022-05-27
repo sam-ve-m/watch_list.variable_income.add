@@ -1,14 +1,14 @@
 include:
 - ./func/*
 kind: ArchiveUploadSpec
-name: func-LYkK
+name: func-MiXh
 
 ---
 apiVersion: fission.io/v1
 kind: Package
 metadata:
   creationTimestamp: null
-  name: wathc-list-save-fn-c46c1bd0-4aa7-49c6-bb75-da537b63b072
+  name: wathc-list-save-fn-4f5cf277-bcf0-4261-9d3c-d5d3dccae985
   namespace: default
 spec:
   deployment:
@@ -19,10 +19,10 @@ spec:
   source:
     checksum: {}
     type: url
-    url: archive://func-LYkK
+    url: archive://func-MiXh
 status:
   buildstatus: pending
-  lastUpdateTimestamp: "2022-05-26T17:23:11Z"
+  lastUpdateTimestamp: "2022-05-27T18:05:24Z"
 
 ---
 apiVersion: fission.io/v1
@@ -49,7 +49,7 @@ spec:
   package:
     functionName: main.save_symbols
     packageref:
-      name: wathc-list-save-fn-c46c1bd0-4aa7-49c6-bb75-da537b63b072
+      name: wathc-list-save-fn-4f5cf277-bcf0-4261-9d3c-d5d3dccae985
       namespace: default
   requestsPerPod: 100000
   resources: {}

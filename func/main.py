@@ -1,9 +1,3 @@
-# from os.path import dirname, abspath
-# import sys
-# path_adjustment = dirname(dirname(abspath(__file__)))
-# print(path_adjustment)
-# sys.path.insert(0, str(path_adjustment))
-
 # Jormungandr
 from src.domain.enums.response.code import InternalCode
 from src.domain.validator import WatchListSymbols
