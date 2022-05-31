@@ -51,6 +51,9 @@ Thumbs.db
 # Python virtual env
 venv/
 
+# Pytest
+.pytest-cache/
+
 # Development scripts
 configure.sh
 remove_fission.sh

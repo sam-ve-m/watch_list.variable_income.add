@@ -10,11 +10,11 @@ from heimdall_client.bifrost import Heimdall
 from http import HTTPStatus
 
 # Third party
-from flask import request, Flask
+from flask import request,Request
 from etria_logger import Gladsheim
 
 
-async def save_symbols(request=request):
+async def save_symbols(request: Request = request):
     raw_params = request.json
     x_thebes_answer = request.headers.get('x-thebes-answer')
 

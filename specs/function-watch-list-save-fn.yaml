@@ -1,35 +1,35 @@
 include:
 - ./func/*
 kind: ArchiveUploadSpec
-name: func-CLvI
+name: func-VRaO
 
 ---
 apiVersion: fission.io/v1
 kind: Package
 metadata:
   creationTimestamp: null
-  name: wathc-list-save-fn-683cfe15-f69d-4070-be7d-ca7094b3c765
+  name: watch-list-save-fn-466770fa-9cfb-401a-81a0-3d1b4d409d79
   namespace: default
 spec:
   deployment:
     checksum: {}
   environment:
-    name: wathc-list-save-env
+    name: watch-list-save-env
     namespace: default
   source:
     checksum: {}
     type: url
-    url: archive://func-CLvI
+    url: archive://func-VRaO
 status:
   buildstatus: pending
-  lastUpdateTimestamp: "2022-05-27T19:48:05Z"
+  lastUpdateTimestamp: "2022-05-31T18:53:49Z"
 
 ---
 apiVersion: fission.io/v1
 kind: Function
 metadata:
   creationTimestamp: null
-  name: wathc-list-save-fn
+  name: watch-list-save-fn
   namespace: default
 spec:
   InvokeStrategy:
@@ -42,14 +42,14 @@ spec:
     StrategyType: execution
   concurrency: 500
   environment:
-    name: wathc-list-save-env
+    name: watch-list-save-env
     namespace: default
   functionTimeout: 60
   idletimeout: 120
   package:
     functionName: main.save_symbols
     packageref:
-      name: wathc-list-save-fn-683cfe15-f69d-4070-be7d-ca7094b3c765
+      name: watch-list-save-fn-466770fa-9cfb-401a-81a0-3d1b4d409d79
       namespace: default
   requestsPerPod: 100000
   resources: {}
