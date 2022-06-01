@@ -1,8 +1,7 @@
-from src.domain.validator import WatchListSymbol
+from src.domain.request.model import WatchListSymbol
 
 
 class WatchListSymbolModel:
-
     def __init__(self, watch_list_symbol: WatchListSymbol, unique_id: str):
         self.unique_id = unique_id
         self.symbol = watch_list_symbol.symbol

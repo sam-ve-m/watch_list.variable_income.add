@@ -20,12 +20,16 @@ class WatchListRepository:
             collection = database[config("MONGODB_WATCH_LIST_COLLECTION")]
             return collection
         except Exception as ex:
-            message = f'UserRepository::_get_collection::Error when trying to get collection'
+            message = (
+                f"UserRepository::_get_collection::Error when trying to get collection"
+            )
             Gladsheim.error(error=ex, message=message)
             raise ex
 
     @classmethod
-    async def insert_one_symbol_in_watch_list(cls, watch_list_symbol: WatchListSymbolModel):
+    async def insert_one_symbol_in_watch_list(
+        cls, watch_list_symbol: WatchListSymbolModel
+    ):
         collection = await cls.__get_collection()
         try:
             watch_list_symbol_dict = watch_list_symbol.to_dict()

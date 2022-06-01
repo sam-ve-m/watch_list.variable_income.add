@@ -54,6 +54,9 @@ venv/
 # Pytest
 .pytest-cache/
 
+# Environment variables
+.env
+
 # Development scripts
 configure.sh
 remove_fission.sh
