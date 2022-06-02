@@ -27,7 +27,7 @@ async def save_symbols(request: Request = request) -> Response:
 
         watch_list_symbols = WatchListSymbols(**raw_params)
         unique_id = jwt_content["decoded_jwt"]["user"]["unique_id"]
-        result = await WatchListService.register(
+        result = await WatchListService.register_symbols(
             watch_list_symbols=watch_list_symbols, unique_id=unique_id
         )
 

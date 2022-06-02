@@ -27,25 +27,23 @@ requests_with_json_invalid = [
     {"smbols": [{"symbol": "PETR4", "reion": "BR"}]},
     {"smbols": [{"symbol": "P", "region": "BR"}]},
     {"smbols": [{"symbol": "PETR4", "region": "PR"}]},
-    {}
-    ]
+    {},
+]
 
 
 @mark.asyncio
-@patch.object(WatchListService, "register")
+@patch.object(WatchListService, "register_symbols")
 @patch.object(Heimdall, "decode_payload")
-async def test_save_symbols_when_request_is_ok(decode_payload_mock, register_mock):
+async def test_save_symbols_when_request_is_ok(
+    decode_payload_mock, register_symbols_mock
+):
     decode_payload_mock.return_value = (decoded_jwt_ok, "HeimdallStatus")
-    register_mock.return_value = True
+    register_symbols_mock.return_value = True
 
     app = Flask(__name__)
     with app.test_request_context(
         json=request_json_ok,
-        headers=Headers(
-            {
-                "x-thebes-answer": "test"
-            }
-        ),
+        headers=Headers({"x-thebes-answer": "test"}),
     ).request as request:
 
         save_symbols_result = await save_symbols(request)
@@ -54,26 +52,24 @@ async def test_save_symbols_when_request_is_ok(decode_payload_mock, register_moc
             save_symbols_result.data
             == b'{"result": null, "message": "Symbols successfully saved", "success": true, "code": 0}'
         )
-        assert register_mock.called
+        assert register_symbols_mock.called
         decode_payload_mock.assert_called_with(jwt="test")
 
 
 @mark.asyncio
 @patch.object(Gladsheim, "error")
-@patch.object(WatchListService, "register")
+@patch.object(WatchListService, "register_symbols")
 @patch.object(Heimdall, "decode_payload")
-async def test_save_symbols_when_jwt_is_invalid(decode_payload_mock, register_mock, etria_mock):
+async def test_save_symbols_when_jwt_is_invalid(
+    decode_payload_mock, register_symbols_mock, etria_mock
+):
     decode_payload_mock.return_value = (decoded_jwt_invalid, "HeimdallStatus")
-    register_mock.return_value = True
+    register_symbols_mock.return_value = True
 
     app = Flask(__name__)
     with app.test_request_context(
         json=request_json_ok,
-        headers=Headers(
-            {
-                "x-thebes-answer": "test_error"
-            }
-        ),
+        headers=Headers({"x-thebes-answer": "test_error"}),
     ).request as request:
 
         save_symbols_result = await save_symbols(request)
@@ -82,7 +78,7 @@ async def test_save_symbols_when_jwt_is_invalid(decode_payload_mock, register_mo
             save_symbols_result.data
             == b'{"result": null, "message": "JWT invalid or not supplied", "success": false, "code": 30}'
         )
-        assert not register_mock.called
+        assert not register_symbols_mock.called
         decode_payload_mock.assert_called_with(jwt="test_error")
         etria_mock.assert_called()
 
@@ -90,20 +86,18 @@ async def test_save_symbols_when_jwt_is_invalid(decode_payload_mock, register_mo
 @mark.asyncio
 @mark.parametrize("request_json", requests_with_json_invalid)
 @patch.object(Gladsheim, "error")
-@patch.object(WatchListService, "register")
+@patch.object(WatchListService, "register_symbols")
 @patch.object(Heimdall, "decode_payload")
-async def test_save_symbols_when_json_is_invalid(decode_payload_mock, register_mock, etria_mock, request_json):
+async def test_save_symbols_when_json_is_invalid(
+    decode_payload_mock, register_symbols_mock, etria_mock, request_json
+):
     decode_payload_mock.return_value = (decoded_jwt_ok, "HeimdallStatus")
-    register_mock.return_value = True
+    register_symbols_mock.return_value = True
 
     app = Flask(__name__)
     with app.test_request_context(
         json=request_json,
-        headers=Headers(
-            {
-                "x-thebes-answer": "test"
-            }
-        ),
+        headers=Headers({"x-thebes-answer": "test"}),
     ).request as request:
 
         save_symbols_result = await save_symbols(request)
@@ -112,27 +106,25 @@ async def test_save_symbols_when_json_is_invalid(decode_payload_mock, register_m
             save_symbols_result.data
             == b'{"result": null, "message": "Invalid params", "success": false, "code": 10}'
         )
-        assert not register_mock.called
+        assert not register_symbols_mock.called
         decode_payload_mock.assert_called_with(jwt="test")
         etria_mock.assert_called()
 
 
 @mark.asyncio
 @patch.object(Gladsheim, "error")
-@patch.object(WatchListService, "register")
+@patch.object(WatchListService, "register_symbols")
 @patch.object(Heimdall, "decode_payload")
-async def test_save_symbols_when_generic_exception_happens(decode_payload_mock, register_mock, etria_mock):
+async def test_save_symbols_when_generic_exception_happens(
+    decode_payload_mock, register_symbols_mock, etria_mock
+):
     decode_payload_mock.return_value = (decoded_jwt_ok, "HeimdallStatus")
-    register_mock.side_effect = Exception("erro")
+    register_symbols_mock.side_effect = Exception("erro")
 
     app = Flask(__name__)
     with app.test_request_context(
         json=request_json_ok,
-        headers=Headers(
-            {
-                "x-thebes-answer": "test"
-            }
-        ),
+        headers=Headers({"x-thebes-answer": "test"}),
     ).request as request:
 
         save_symbols_result = await save_symbols(request)
@@ -141,6 +133,6 @@ async def test_save_symbols_when_generic_exception_happens(decode_payload_mock, 
             save_symbols_result.data
             == b'{"result": null, "message": "Unexpected error occurred", "success": false, "code": 100}'
         )
-        assert register_mock.called
+        assert register_symbols_mock.called
         decode_payload_mock.assert_called_with(jwt="test")
         etria_mock.assert_called()

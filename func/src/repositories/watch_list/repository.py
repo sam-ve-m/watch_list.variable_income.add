@@ -41,7 +41,7 @@ class WatchListRepository:
             raise ex
 
     @classmethod
-    async def exists(cls, watch_list_symbol: WatchListSymbolModel):
+    async def exists_in_watch_list(cls, watch_list_symbol: WatchListSymbolModel):
         collection = await cls.__get_collection()
         try:
             id = watch_list_symbol.id
