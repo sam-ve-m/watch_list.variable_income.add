@@ -1,17 +1,15 @@
-# Jormungandr
+from http import HTTPStatus
+
+from etria_logger import Gladsheim
+from flask import request, Request, Response
+from heimdall_client.bifrost import Heimdall
+from heimdall_client.bifrost import HeimdallStatusResponses
+
 from src.domain.enums.response.code import InternalCode
 from src.domain.exceptions.model import UnauthorizedError
 from src.domain.request.model import WatchListSymbols
-from src.services.watch_list import WatchListService
 from src.domain.response.model import ResponseModel
-from heimdall_client.bifrost import Heimdall
-
-# Standards
-from http import HTTPStatus
-
-# Third party
-from flask import request, Request, Response
-from etria_logger import Gladsheim
+from src.services.watch_list import WatchListService
 
 
 async def save_symbols(request: Request = request) -> Response:
@@ -22,7 +20,7 @@ async def save_symbols(request: Request = request) -> Response:
         jwt_content, heimdall_status = await Heimdall.decode_payload(
             jwt=x_thebes_answer
         )
-        if not jwt_content["is_payload_decoded"]:
+        if heimdall_status != HeimdallStatusResponses.SUCCESS:
             raise UnauthorizedError()
 
         watch_list_symbols = WatchListSymbols(**raw_params)
@@ -55,7 +53,6 @@ async def save_symbols(request: Request = request) -> Response:
             message=message,
         ).build_http_response(status=HTTPStatus.BAD_REQUEST)
         return response
-
     except Exception as ex:
         message = "Unexpected error occurred"
         Gladsheim.error(error=ex, message=message)

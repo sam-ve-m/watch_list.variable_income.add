@@ -1,10 +1,8 @@
-# Jormungandr
-from src.domain.enums.region.enum import Region
+from typing import List
 
-# Third party
 from pydantic import BaseModel, constr
 
-from typing import List
+from src.domain.enums.region.enum import Region
 
 
 class WatchListSymbol(BaseModel):

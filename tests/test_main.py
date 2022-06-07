@@ -3,6 +3,7 @@ from unittest.mock import patch
 from etria_logger import Gladsheim
 from flask import Flask
 from heimdall_client.bifrost import Heimdall
+from heimdall_client.bifrost import HeimdallStatusResponses
 from pytest import mark
 from werkzeug.test import Headers
 
@@ -37,7 +38,7 @@ requests_with_json_invalid = [
 async def test_save_symbols_when_request_is_ok(
     decode_payload_mock, register_symbols_mock
 ):
-    decode_payload_mock.return_value = (decoded_jwt_ok, "HeimdallStatus")
+    decode_payload_mock.return_value = (decoded_jwt_ok, HeimdallStatusResponses.SUCCESS)
     register_symbols_mock.return_value = True
 
     app = Flask(__name__)
@@ -63,7 +64,10 @@ async def test_save_symbols_when_request_is_ok(
 async def test_save_symbols_when_jwt_is_invalid(
     decode_payload_mock, register_symbols_mock, etria_mock
 ):
-    decode_payload_mock.return_value = (decoded_jwt_invalid, "HeimdallStatus")
+    decode_payload_mock.return_value = (
+        decoded_jwt_invalid,
+        HeimdallStatusResponses.INVALID_TOKEN,
+    )
     register_symbols_mock.return_value = True
 
     app = Flask(__name__)
@@ -91,7 +95,7 @@ async def test_save_symbols_when_jwt_is_invalid(
 async def test_save_symbols_when_json_is_invalid(
     decode_payload_mock, register_symbols_mock, etria_mock, request_json
 ):
-    decode_payload_mock.return_value = (decoded_jwt_ok, "HeimdallStatus")
+    decode_payload_mock.return_value = (decoded_jwt_ok, HeimdallStatusResponses.SUCCESS)
     register_symbols_mock.return_value = True
 
     app = Flask(__name__)
@@ -118,7 +122,7 @@ async def test_save_symbols_when_json_is_invalid(
 async def test_save_symbols_when_generic_exception_happens(
     decode_payload_mock, register_symbols_mock, etria_mock
 ):
-    decode_payload_mock.return_value = (decoded_jwt_ok, "HeimdallStatus")
+    decode_payload_mock.return_value = (decoded_jwt_ok, HeimdallStatusResponses.SUCCESS)
     register_symbols_mock.side_effect = Exception("erro")
 
     app = Flask(__name__)

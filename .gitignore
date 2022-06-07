@@ -57,6 +57,9 @@ venv/
 # Environment variables
 .env
 
+# Fission
+specs/
+
 # Development scripts
 configure.sh
 remove_fission.sh

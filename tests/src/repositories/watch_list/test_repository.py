@@ -7,6 +7,7 @@ from pytest import mark
 
 from src.domain.request.model import WatchListSymbols
 from src.domain.watch_list.model import WatchListSymbolModel
+from src.infrastructures.mongo_db.infrastructure import MongoDBInfrastructure
 from src.repositories.watch_list.repository import WatchListRepository
 
 dummy_symbols_to_insert = {
@@ -28,54 +29,121 @@ dummy_insert = [
 
 
 @mark.asyncio
-@mark.parametrize("symbols_to_insert", dummy_watch_list_symbols_model)
 @patch.object(WatchListRepository, "_WatchListRepository__get_collection")
-async def test_insert_one_symbol_in_watch_list(get_collection_mock, symbols_to_insert):
-    await WatchListRepository.insert_one_symbol_in_watch_list(symbols_to_insert)
-    get_collection_mock.assert_called_once_with()
-    for insertion in range(0, len(dummy_insert)):
-        for calls in get_collection_mock.mock_calls:
-            if calls[0] == "().insert_one":
-                assert str(calls[1][0]) in dummy_insert
+async def test_insert_all_symbols_in_watch_list(get_collection_mock, monkeypatch):
+    class TransactionMock:
+        async def __aenter__(self):
+            return AsyncMock()
 
+        async def __aexit__(self, exc_type, exc_val, exc_tb):
+            return
 
-@mark.asyncio
-@patch.object(Gladsheim, "error")
-@patch.object(WatchListRepository, "_WatchListRepository__get_collection")
-async def test_insert_one_symbol_in_watch_list_exception(
-    get_collection_mock, etria_mock
-):
-    get_collection_mock.insert_one.side_effect = Exception("Erro")
-    with pytest.raises(Exception):
-        await WatchListRepository.insert_one_symbol_in_watch_list(
-            dummy_watch_list_symbols_model[0]
-        )
-        get_collection_mock.assert_called_once_with()
-        etria_mock.assert_called()
+    class ActuallySessionMock:
+        def start_transaction(self):
+            return TransactionMock()
 
+        async def __aenter__(self):
+            return AsyncMock()
 
-@mark.asyncio
-@mark.parametrize("symbol_finded", [{"symbol": "test"}, {}])
-@patch.object(WatchListRepository, "_WatchListRepository__get_collection")
-async def test_exists_in_watch_list(get_collection_mock, symbol_finded):
+        async def __aexit__(self, exc_type, exc_val, exc_tb):
+            pass
+
+    class SessionMock:
+        session = ActuallySessionMock()
+
+        async def __aenter__(self):
+            return self.session
+
+        async def __aexit__(self, exc_type, exc_val, exc_tb):
+            pass
+
+    class ClientMock:
+        session = SessionMock()
+
+        async def start_session(self):
+            return self.session
+
+        async def __aenter__(self):
+            pass
+
+        async def __aexit__(self, exc_type, exc_val, exc_tb):
+            pass
+
+    def get_client_mock():
+        return ClientMock()
+
     collection_mock = AsyncMock()
-    collection_mock.find_one.return_value = symbol_finded
+    collection_mock.update_one.return_value = True
     get_collection_mock.return_value = collection_mock
-    result = await WatchListRepository.exists_in_watch_list(
-        dummy_watch_list_symbols_model[0]
+
+    monkeypatch.setattr(
+        MongoDBInfrastructure,
+        "get_client",
+        get_client_mock
+    )
+
+    await WatchListRepository.insert_all_symbols_in_watch_list(
+        dummy_watch_list_symbols_model
     )
     get_collection_mock.assert_called_once_with()
-    assert result == bool(symbol_finded)
+    assert collection_mock.update_one.call_count == len(dummy_watch_list_symbols_model)
 
 
 @mark.asyncio
 @patch.object(Gladsheim, "error")
 @patch.object(WatchListRepository, "_WatchListRepository__get_collection")
-async def test_exists_in_watch_list_exception(get_collection_mock, etria_mock):
-    get_collection_mock.find_one.side_effect = Exception("Erro")
+async def test_insert_all_symbols_in_watch_list_exception(get_collection_mock, etria_error_mock, monkeypatch):
+    class ActuallySessionMock:
+        def start_transaction(self):
+            raise Exception("ERROR")
+
+        async def __aenter__(self):
+            return AsyncMock()
+
+        async def __aexit__(self, exc_type, exc_val, exc_tb):
+            pass
+
+    class SessionMock:
+        session = ActuallySessionMock()
+
+        async def __aenter__(self):
+            return self.session
+
+        async def __aexit__(self, exc_type, exc_val, exc_tb):
+            pass
+
+    class ClientMock:
+        session = SessionMock()
+
+        async def start_session(self):
+            return self.session
+
+        async def __aenter__(self):
+            pass
+
+        async def __aexit__(self, exc_type, exc_val, exc_tb):
+            pass
+
+    def get_client_mock():
+        return ClientMock()
+
+    collection_mock = AsyncMock()
+    collection_mock.update_one.return_value = True
+    get_collection_mock.return_value = collection_mock
+
+    monkeypatch.setattr(
+        MongoDBInfrastructure,
+        "get_client",
+        get_client_mock
+    )
+
     with pytest.raises(Exception):
-        await WatchListRepository.exists_in_watch_list(
-            dummy_watch_list_symbols_model[0]
+        await WatchListRepository.insert_all_symbols_in_watch_list(
+            dummy_watch_list_symbols_model
         )
+
         get_collection_mock.assert_called_once_with()
-        etria_mock.assert_called()
+        get_collection_mock.assert_called_once_with()
+        collection_mock.update_one.assert_not_called()
+        collection_mock.update_one.assert_not_awaited()
+        etria_error_mock.assert_called()
