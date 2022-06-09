@@ -76,11 +76,7 @@ async def test_insert_all_symbols_in_watch_list(get_collection_mock, monkeypatch
     collection_mock.update_one.return_value = True
     get_collection_mock.return_value = collection_mock
 
-    monkeypatch.setattr(
-        MongoDBInfrastructure,
-        "get_client",
-        get_client_mock
-    )
+    monkeypatch.setattr(MongoDBInfrastructure, "get_client", get_client_mock)
 
     await WatchListRepository.insert_all_symbols_in_watch_list(
         dummy_watch_list_symbols_model
@@ -92,7 +88,9 @@ async def test_insert_all_symbols_in_watch_list(get_collection_mock, monkeypatch
 @mark.asyncio
 @patch.object(Gladsheim, "error")
 @patch.object(WatchListRepository, "_WatchListRepository__get_collection")
-async def test_insert_all_symbols_in_watch_list_exception(get_collection_mock, etria_error_mock, monkeypatch):
+async def test_insert_all_symbols_in_watch_list_exception(
+    get_collection_mock, etria_error_mock, monkeypatch
+):
     class ActuallySessionMock:
         def start_transaction(self):
             raise Exception("ERROR")
@@ -131,11 +129,7 @@ async def test_insert_all_symbols_in_watch_list_exception(get_collection_mock, e
     collection_mock.update_one.return_value = True
     get_collection_mock.return_value = collection_mock
 
-    monkeypatch.setattr(
-        MongoDBInfrastructure,
-        "get_client",
-        get_client_mock
-    )
+    monkeypatch.setattr(MongoDBInfrastructure, "get_client", get_client_mock)
 
     with pytest.raises(Exception):
         await WatchListRepository.insert_all_symbols_in_watch_list(
