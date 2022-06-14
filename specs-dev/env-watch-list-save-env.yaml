@@ -23,7 +23,7 @@ spec:
         - name: ETRIA_LOG_LEVEL
           value: "INFO"
         - name: MONGO_CONNECTION_URL
-          value: "mongodb://bnd:4FZPY5Yj@172.30.18.223:41000,172.30.19.240:41000,172.30.19.71:41000/?authSource=admin&replicaSet=rslionx&readPreference=secondary&appname=MongoDB%20Compass&ssl=false"
+          value: "mongodb://bnd:jkl321pqr@172.30.10.75:41000/?authSource=admin&replicaSet=rslionx&readPreference=secondary"
         - name: MONGODB_DATABASE_NAME
           value: "lionx"
         - name: MONGODB_WATCH_LIST_COLLECTION
@@ -49,7 +49,7 @@ spec:
         - name: HEIMDALL_REDIS_PORT
           value: "6379"
         - name: HEIMDALL_REDIS_DB
-          value: "0"
+          value: "7"
         - name: HEIMDALL_REDIS_USER
           value: "bnd"
         - name: HEIMDALL_REDIS_PASSWORD
