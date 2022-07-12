@@ -47,7 +47,7 @@ spec:
         - name: HEIMDALL_REDIS_DB
           value: "1"
         - name: HEIMDALL_REDIS_USER
-          value: "bnd"
+          value: "heimdal"
         - name: HEIMDALL_REDIS_PASSWORD
           value: "FBJAnjkqw21yjewkDSA"
         - name: ASGI_FRAMEWORK
