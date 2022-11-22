@@ -1,1 +1,2 @@
-specs-prod/env* filter=git-crypt diff=git-crypt
+specs-drp/env* filter=git-crypt diff=git-crypt
+specs-prd/env* filter=git-crypt diff=git-crypt
