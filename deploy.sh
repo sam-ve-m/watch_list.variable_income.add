@@ -1,5 +1,4 @@
-#!/bin/bash
 fission spec init
-fission env create --spec --name watch-list-save-env --image nexus.sigame.com.br/fission-async:0.1.6 --builder nexus.sigame.com.br/fission-builder-3.8:0.0.1
-fission fn create --spec --name watch-list-save-fn --env watch-list-save-env --src "./func/*" --entrypoint main.save_symbols  --rpp 100000
-fission route create --spec --method POST --url /watch_list/add --function watch-list-save-fn
+fission env create --spec --name wtc-list-add-env --image nexus.sigame.com.br/fission-wacth-list-add:0.1.0 --poolsize 0 --version 3 --imagepullsecret "nexus-v3" --spec
+fission fn create --spec --name wtc-list-add-fn --env wtc-list-add-env --code fission.py --targetcpu 80 --executortype newdeploy --maxscale 3 --requestsperpod 10000 --spec
+fission route create --spec --name wtc-list-add-rt --method POST --url /watch_list/add --function wtc-list-add-fn

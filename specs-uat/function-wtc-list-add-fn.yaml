@@ -1,55 +1,61 @@
 include:
-- ./func/*
+- fission.py
 kind: ArchiveUploadSpec
-name: func-VRaO
+name: fission-py-vIwI
 
 ---
 apiVersion: fission.io/v1
 kind: Package
 metadata:
   creationTimestamp: null
-  name: watch-list-save-fn-466770fa-9cfb-401a-81a0-3d1b4d409d79
+  name: wtc-list-add-fn-d0255eea-37ce-4cfd-a68c-2ea25826b4de
   namespace: default
 spec:
   deployment:
     checksum: {}
+    type: url
+    url: archive://fission-py-vIwI
   environment:
-    name: watch-list-save-env
+    name: wtc-list-add-env
     namespace: default
   source:
     checksum: {}
-    type: url
-    url: archive://func-VRaO
 status:
-  buildstatus: pending
-  lastUpdateTimestamp: "2022-05-31T18:53:49Z"
+  buildstatus: none
+  lastUpdateTimestamp: "2023-01-09T16:50:31Z"
 
 ---
 apiVersion: fission.io/v1
 kind: Function
 metadata:
   creationTimestamp: null
-  name: watch-list-save-fn
+  name: wtc-list-add-fn
   namespace: default
 spec:
   InvokeStrategy:
     ExecutionStrategy:
       ExecutorType: newdeploy
-      MaxScale: 6
+      MaxScale: 3
       MinScale: 1
       SpecializationTimeout: 120
-      TargetCPUPercent: 80
+      TargetCPUPercent: 0
+      hpaMetrics:
+      - resource:
+          name: cpu
+          target:
+            averageUtilization: 80
+            type: Utilization
+        type: Resource
     StrategyType: execution
   concurrency: 500
   environment:
-    name: watch-list-save-env
+    name: wtc-list-add-env
     namespace: default
   functionTimeout: 60
   idletimeout: 120
   package:
-    functionName: main.save_symbols
     packageref:
-      name: watch-list-save-fn-466770fa-9cfb-401a-81a0-3d1b4d409d79
+      name: wtc-list-add-fn-d0255eea-37ce-4cfd-a68c-2ea25826b4de
       namespace: default
-  requestsPerPod: 100000
+  requestsPerPod: 10000
   resources: {}

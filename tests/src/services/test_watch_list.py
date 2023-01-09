@@ -2,10 +2,10 @@ from unittest.mock import patch
 
 from pytest import mark
 
-from src.domain.request.model import WatchListSymbols
-from src.domain.watch_list.model import WatchListSymbolModel
-from src.repositories.watch_list.repository import WatchListRepository
-from src.services.watch_list import WatchListService
+from func.src.domain.request.model import WatchListSymbols
+from func.src.domain.watch_list.model import WatchListSymbolModel
+from func.src.repositories.watch_list.repository import WatchListRepository
+from func.src.services.watch_list import WatchListService
 
 dummy_symbols_to_register = {
     "symbols": [
