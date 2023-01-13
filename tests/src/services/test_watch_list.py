@@ -27,3 +27,4 @@ async def test_register_symbols(insert_all_symbols_in_watch_list_mock):
     assert insert_all_symbols_in_watch_list_mock.call_count == 1
     for call in insert_all_symbols_in_watch_list_mock.call_args[0][0]:
         assert isinstance(call, WatchListSymbolModel)
+    assert result is True

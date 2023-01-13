@@ -9,6 +9,7 @@ class WatchListSymbolModel:
 
     def to_dict(self) -> dict:
         dict_representation = {
+            "asset_type": "variable_income",
             "unique_id": self.__unique_id,
             "symbol": self.__symbol,
             "region": self.__region,

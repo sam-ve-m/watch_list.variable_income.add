@@ -83,6 +83,7 @@ async def test_insert_all_symbols_in_watch_list(get_collection_mock, monkeypatch
     )
     get_collection_mock.assert_called_once_with()
     assert collection_mock.update_one.call_count == len(dummy_watch_list_symbols_model)
+    assert collection_mock.update_one.call_args_list[0].kwargs["upsert"] is True
 
 
 @mark.asyncio
