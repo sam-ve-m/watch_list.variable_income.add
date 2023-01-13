@@ -14,10 +14,10 @@ spec:
   ingressconfig:
     annotations: null
     host: '*'
-    path: /watch_list/add
+    path: /watch_list/variable_income/add
     tls: ""
   method: ""
   methods:
   - POST
   prefix: ""
-  relativeurl: /watch_list/add
+  relativeurl: /watch_list/variable_income/add
