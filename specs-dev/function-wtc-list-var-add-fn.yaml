@@ -1,61 +1,57 @@
 include:
 - fission.py
 kind: ArchiveUploadSpec
-name: fission-py-vIwI
+name: fission-py-QASr
 
 ---
 apiVersion: fission.io/v1
 kind: Package
 metadata:
   creationTimestamp: null
-  name: wtc-list-add-fn-d0255eea-37ce-4cfd-a68c-2ea25826b4de
+  name: wtc-list-var-add-fn-bc117c15-8c50-4624-a4a8-7b36f187edf4
   namespace: default
 spec:
   deployment:
     checksum: {}
     type: url
-    url: archive://fission-py-vIwI
+    url: archive://fission-py-QASr
   environment:
-    name: wtc-list-add-env
+    name: wtc-list-var-add-env
     namespace: default
   source:
     checksum: {}
 status:
   buildstatus: none
-  lastUpdateTimestamp: "2023-01-09T16:50:31Z"
+  lastUpdateTimestamp: "2023-01-16T12:15:02Z"
 
 ---
 apiVersion: fission.io/v1
 kind: Function
 metadata:
   creationTimestamp: null
-  name: wtc-list-add-fn
+  name: wtc-list-var-add-fn
   namespace: default
 spec:
   InvokeStrategy:
     ExecutionStrategy:
-      ExecutorType: newdeploy
-      MaxScale: 3
-      MinScale: 1
+      ExecutorType: poolmgr
       SpecializationTimeout: 120
-      TargetCPUPercent: 0
-      hpaMetrics:
-      - resource:
-          name: cpu
-          target:
-            averageUtilization: 80
-            type: Utilization
-        type: Resource
     StrategyType: execution
   concurrency: 500
   environment:
-    name: wtc-list-add-env
+    name: wtc-list-var-add-env
     namespace: default
   functionTimeout: 60
   idletimeout: 120
   package:
     packageref:
-      name: wtc-list-add-fn-d0255eea-37ce-4cfd-a68c-2ea25826b4de
+      name: wtc-list-var-add-fn-bc117c15-8c50-4624-a4a8-7b36f187edf4
       namespace: default
   requestsPerPod: 10000
-  resources: {}
+  resources:
+    requests:
+      cpu: 128m
+      memory: 128Mi
+    limits:
+      cpu: 256m
+      memory: 256Mi
